@@ -1,0 +1,16 @@
+---
+# tasks file for ansible-role-k3s
+
+- name: Install k3s server
+  command: curl -sfL https://get.k3s.io | sh -
+  when: {{ mode }} == server
+
+- name: copy node token
+  copy:
+    src: /var/lib/rancher/k3s/server/node-token
+    dest: /tmp/node-token
+  when: {{ mode }} == node
+
+- name: Install k3s node
+  command: curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /tmp/node-token` sh -
+  when: {{ mode }} == node
