@@ -2,13 +2,21 @@
 # tasks file for ansible-role-k3s
 
 - name: Install k3s server
-  command: curl -sfL https://get.k3s.io | sh -
+  command: curl -sfL https://get.k3s.io | sh - --kube-apiserver-arg token-auth-file=
   when: {{ mode }} == server
 
-- name: copy node token
-  copy:
+- name: Fetch the file from the master
+  run_once: yes
+  fetch: 
     src: /var/lib/rancher/k3s/server/node-token
-    dest: /tmp/node-token
+    dest: buffer/tmp/node-token
+    flat: yes
+  when: {{ mode }} == node
+
+- name: Copy node token from master
+  copy: 
+    src: buffer/tmp/node-token
+    dest: /tmp/
   when: {{ mode }} == node
 
 - name: Install k3s node
