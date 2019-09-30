@@ -14,13 +14,13 @@
   run_once: yes
   fetch: 
     src: /var/lib/rancher/k3s/server/node-token
-    dest: buffer/tmp/node-token
+    dest: /tmp/node-token
     flat: yes
   when: ( mode == "node" )
 
 - name: Copy node token from master
   copy: 
-    src: buffer/tmp/node-token
+    src: /tmp/node-token
     dest: /tmp/
   when: ( mode == "node" )
 
