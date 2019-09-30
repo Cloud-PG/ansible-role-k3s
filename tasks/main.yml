@@ -11,10 +11,9 @@
   when: ( mode == "server" )
 
 - name: Synchronization of k3s node token
-  synchronize:
+  copy:
     src: /var/lib/rancher/k3s/server/node-token
     dest: /tmp/node-token
-  delegate_to: vnode-0
   when: ( mode == "node" )
 
 - name: Install k3s node
