@@ -1,8 +1,13 @@
 ---
 # tasks file for ansible-role-k3s
 
+- name: get k3s bin
+  get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s.sh
+
 - name: Install k3s server
-  command: curl -sfL https://get.k3s.io | sh - --kube-apiserver-arg token-auth-file=
+  command: sh /tmp/k3s.sh
   when: ( mode == "server" )
 
 - name: Fetch the file from the master
@@ -20,5 +25,5 @@
   when: ( mode == "node" )
 
 - name: Install k3s node
-  command: curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /tmp/node-token` sh -
+  command: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /tmp/node-token` sh /tmp/k3s.sh
   when: ( mode == "node" )
