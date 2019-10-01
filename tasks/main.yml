@@ -14,6 +14,10 @@
   command: cp /var/lib/rancher/k3s/server/node-token /root/node-token
   when: ( mode == "server" )
 
+- name: Link kubectl to /usr/bin/kubectl
+  command: ln -s /usr/local/bin/kubectl /usr/bin/kubectl 
+  when: ( mode == "server" )
+
 # - name: Synchronization of k3s node token
 #   synchronize:
 #     src: /var/lib/rancher/k3s/server/node-token
