@@ -15,7 +15,10 @@
   when: ( mode == "server" )
 
 - name: Link kubectl to /usr/bin/kubectl
-  command: ln -s /usr/local/bin/kubectl /usr/bin/kubectl 
+  file:
+    src: /usr/local/bin/kubectl
+    dest: /usr/bin/kubectl
+    state: link
   when: ( mode == "server" )
 
 # - name: Synchronization of k3s node token
