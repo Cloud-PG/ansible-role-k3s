@@ -7,7 +7,7 @@
     dest: /tmp/k3s.sh
 
 - name: Install k3s server
-  command: sh /tmp/k3s.sh
+  command: sh /tmp/k3s.sh --docker
   when: ( mode == "server" )
 
 - name: Copy node token into nfs folder
