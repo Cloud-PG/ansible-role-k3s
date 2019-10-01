@@ -10,12 +10,17 @@
   command: sh /tmp/k3s.sh
   when: ( mode == "server" )
 
-- name: Synchronization of k3s node token
-  copy:
-    src: /var/lib/rancher/k3s/server/node-token
-    dest: /tmp/node-token
-  when: ( mode == "node" )
+- name: Copy node token into nfs folder
+  command: cp /var/lib/rancher/k3s/server/node-token /root/node-token
+  when: ( mode == "server" )
+
+# - name: Synchronization of k3s node token
+#   synchronize:
+#     src: /var/lib/rancher/k3s/server/node-token
+#     dest: /tmp/node-token
+#   delegate_to: "{{ inventory_hostname }}"
+#   when: ( mode == "node" )
 
 - name: Install k3s node
-  shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /tmp/node-token` sh /tmp/k3s.sh
+  shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh
   when: ( mode == "node" )
