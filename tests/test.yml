@@ -5,3 +5,5 @@
     - role: ansible-role-k3s
       master_ip: localhost
       mode: server
+      node_labels: 
+        - unlabelled = true
