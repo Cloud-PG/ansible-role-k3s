@@ -29,5 +29,6 @@
 #   when: ( mode == "node" )
 
 - name: Install k3s node
-  shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh
+  shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh --node-label {{ item }}
   when: ( mode == "node" )
+  with_items: {{ node_labels }}

@@ -2,4 +2,6 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-k3s
+    - role: ansible-role-k3s
+      master_ip: localhost
+      mode: server

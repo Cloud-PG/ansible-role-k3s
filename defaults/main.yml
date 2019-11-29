@@ -1,2 +1,5 @@
 ---
 # defaults file for ansible-role-k3s
+
+node_labels: 
+  - unlabelled = true
