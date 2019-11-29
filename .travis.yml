@@ -22,7 +22,11 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
-  - sudo printf '[defaults]\nroles_path=../' > ansible.cfg
+  - sudo printf '[defaults]\nroles_path=../' > ansible.cfg 
+
+  - ansible-galaxy install indigo-dc.nfs
+
+  - ansible-galaxy install indigo-dc.docker
 
 script:
   
