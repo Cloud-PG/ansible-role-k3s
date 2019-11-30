@@ -21,8 +21,15 @@
     state: link
   when: ( mode == "server" )
 
+- name: Get Helm
+  get_url:
+    url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    dest: /usr/bin/get-helm-3
+    mode: 0777
+  when: ( mode == "server" )
+
 - name: Install Helm
-  command: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+  command: /usr/bin/get-helm-3
   when: ( mode == "server" )
 
 # - name: Synchronization of k3s node token
