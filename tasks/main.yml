@@ -39,9 +39,9 @@
 #   delegate_to: "{{ inventory_hostname }}"
 #   when: ( mode == "node" )
 
-- name: wait 5 min for flannel to start
+- name: wait 2 min for flannel to start
   wait_for:
-    timeout: 300
+    timeout: 120
   delegate_to: localhost
 
 - name: Install k3s node
