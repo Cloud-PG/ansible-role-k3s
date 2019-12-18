@@ -39,12 +39,13 @@
 #   delegate_to: "{{ inventory_hostname }}"
 #   when: ( mode == "node" )
 
-- name: wait 10 min for flannel to start
+- name: wait 2 min for flannel to start
   wait_for:
-    timeout: 600 
+    timeout: 120 
   delegate_to: localhost
 
 - name: Install k3s node
-  shell: INSTALL_K3S_EXEC="--docker" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
+  shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
+  #shell: INSTALL_K3S_EXEC="--docker" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
   #--node-label {{ node_label }}
   when: ( mode == "node" )
