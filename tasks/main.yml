@@ -7,7 +7,7 @@
     dest: /tmp/k3s.sh
 
 - name: Install k3s server
-  command: sh /tmp/k3s.sh --docker --no-deploy traefik
+  command: sh /tmp/k3s.sh --no-deploy traefik
   when: ( mode == "server" )
 
 - name: Copy node token into nfs folder
