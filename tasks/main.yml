@@ -58,6 +58,7 @@
   wait_for:
     timeout: 120 
   delegate_to: localhost
+  when: ( mode == "node )
 
 - name: Install k3s node
   shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
