@@ -48,6 +48,7 @@
   when: ( mode == "server" )
 
 - name: "Token: {{ token.stdout }}"
+  shell: sleep 1
   when: ( mode == "server" )
 
 # - name: Synchronization of k3s node token
