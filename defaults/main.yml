@@ -1,4 +1,6 @@
 ---
 # defaults file for ansible-role-k3s
 
+masterNodePort: 30443
+
 node_label: unlabelled=true

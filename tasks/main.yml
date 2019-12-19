@@ -32,6 +32,22 @@
   command: /usr/bin/get-helm-3
   when: ( mode == "server" )
 
+- name: Configure dashboard manifest
+  template:
+    src: templates/kubernetes-dashboard.yaml
+    dest: /etc/kubernetes-dashboard.yaml
+  when: ( mode == "server" )
+
+- name: install Kubernetes dashboard
+  k8s:
+    state: present
+    src:  /etc/kubernetes-dashboard.yaml
+  when: ( mode == "server" )
+
+- name: get the dashboard token
+  shell: echo -e "Token for dashboard access:\n $(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')"
+  when: ( mode == "server" )
+
 # - name: Synchronization of k3s node token
 #   synchronize:
 #     src: /var/lib/rancher/k3s/server/node-token
