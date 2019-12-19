@@ -39,9 +39,7 @@
   when: ( mode == "server" )
 
 - name: install Kubernetes dashboard
-  k8s:
-    state: present
-    src:  /etc/kubernetes-dashboard.yaml
+  shell: kubectl apply -f /etc/kubernetes-dashboard.yaml
   when: ( mode == "server" )
 
 - name: get the dashboard token
