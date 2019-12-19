@@ -47,9 +47,9 @@
   register: token
   when: ( mode == "server" )
 
-- name: "Token: {{ token.stdout }}"
-  shell: sleep 1
-  when: ( mode == "server" )
+- name: print token
+  debug:
+    var: token.stdout_lines
 
 # - name: Synchronization of k3s node token
 #   synchronize:
