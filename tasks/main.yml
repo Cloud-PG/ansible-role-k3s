@@ -43,7 +43,11 @@
   when: ( mode == "server" )
 
 - name: get the dashboard token
-  shell: echo -e "Token for dashboard access:\n $(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')"
+  shell: echo "$(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')"
+  register: token
+  when: ( mode == "server" )
+
+- name: "Token: {{ token.stdout }}"
   when: ( mode == "server" )
 
 # - name: Synchronization of k3s node token
