@@ -23,6 +23,7 @@
 
 - name: Install Helm v2
   shell: |
+    export KUBECONFIG=/var/lib/rancher/k3s/server/cred/admin.kubeconfig
     curl -L https://git.io/get_helm.sh | bash
     kubectl -n kube-system create serviceaccount tiller
 
