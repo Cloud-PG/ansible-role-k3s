@@ -2,4 +2,5 @@
 # defaults file for ansible-role-k3s
 
 dashboardNodePort: 30443
+helm_version: v2
 node_label: unlabelled=true

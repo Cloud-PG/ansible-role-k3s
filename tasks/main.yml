@@ -21,16 +21,27 @@
     state: link
   when: ( mode == "server" )
 
-- name: Get Helm
+- name: Install Helm v2
+  shell: |
+    kubectl -n kube-system create serviceaccount tiller
+
+    kubectl create clusterrolebinding tiller \
+      --clusterrole=cluster-admin \
+      --serviceaccount=kube-system:tiller
+  
+    helm init --service-account tiller
+  when: ( mode == "server" ) and ( helm_version == "v2" )
+
+- name: Get Helm v3
   get_url:
     url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     dest: /usr/bin/get-helm-3
     mode: 0777
-  when: ( mode == "server" )
+  when: ( mode == "server" ) and ( helm_version == "v3" )
 
-- name: Install Helm
+- name: Install Helm v3
   command: /usr/bin/get-helm-3
-  when: ( mode == "server" )
+  when: ( mode == "server" ) and ( helm_version == "v3" )
 
 - name: Configure dashboard manifest
   template:
