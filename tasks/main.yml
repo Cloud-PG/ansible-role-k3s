@@ -23,9 +23,7 @@
 
 - name: Install Helm v2
   shell: |
-    curl -LO https://git.io/get_helm.sh
-    chmod 700 get_helm.sh
-    ./get_helm.sh
+    curl -L https://git.io/get_helm.sh | bash
     kubectl -n kube-system create serviceaccount tiller
 
     kubectl create clusterrolebinding tiller \
@@ -33,6 +31,7 @@
       --serviceaccount=kube-system:tiller
   
     helm init --service-account tiller
+  warn: no
   when: ( mode == "server" ) and ( helm_version == "v2" )
 
 - name: Get Helm v3
