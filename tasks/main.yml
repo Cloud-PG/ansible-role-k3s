@@ -75,7 +75,7 @@
   when: ( mode == "node" )
 
 - name: Install k3s node
-  shell: K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
+  shell: INSTALL_K3S_EXEC="--node-label {{ node_label }}" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
   #shell: INSTALL_K3S_EXEC="--docker" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
   #--node-label {{ node_label }}
   when: ( mode == "node" )
