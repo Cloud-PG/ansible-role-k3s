@@ -32,7 +32,7 @@
       --serviceaccount=kube-system:tiller
   
     helm init --service-account tiller
-  warn: no
+  warn: false
   when: ( mode == "server" ) and ( helm_version == "v2" )
 
 - name: Get Helm v3
