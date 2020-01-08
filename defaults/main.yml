@@ -5,5 +5,5 @@ dashboardNodePort: 30443
 helm_version: v2
 node_label: unlabelled=true
 nfs_exports:
-    - path: "/home"
+    - path: "/root"
       export: "*(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
