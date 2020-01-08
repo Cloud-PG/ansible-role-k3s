@@ -1,2 +1,5 @@
 ---
 # vars file for ansible-role-k3s
+nfs_exports:
+    - path: "/root"
+      export: "*(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
