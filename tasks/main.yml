@@ -62,7 +62,7 @@
 
 - name: dump token on k3s master node
   copy:
-    content: "{{ token }}"
+    content: "{{ token.stdout_lines }}"
     dest: /etc/k8s_dashboard_token
   when: ( mode == "server" )
 
