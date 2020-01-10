@@ -60,12 +60,11 @@
   register: token
   when: ( mode == "server" )
 
-# - name: Synchronization of k3s node token
-#   synchronize:
-#     src: /var/lib/rancher/k3s/server/node-token
-#     dest: /tmp/node-token
-#   delegate_to: "{{ inventory_hostname }}"
-#   when: ( mode == "node" )
+- name: dump token on k3s master node
+  copy:
+    content: "{{ token }}"
+    dest: /etc/k8s_dashboard_token
+  when: ( mode == "server" )
 
 - name: wait 2 min for flannel to start
   wait_for:
