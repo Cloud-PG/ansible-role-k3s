@@ -9,7 +9,7 @@
 - name: Install k3s server
   command: sh /tmp/k3s.sh --no-deploy traefik
   environment: 
-    INSTALL_K3S_VERSION: {{ k3s_version }}
+    INSTALL_K3S_VERSION: "{{ k3s_version }}"
   when: ( mode == "server" )
 
 - name: Link kubectl to /usr/bin/kubectl
