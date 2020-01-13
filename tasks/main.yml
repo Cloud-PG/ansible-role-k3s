@@ -56,15 +56,20 @@
   when: ( mode == "server" )
 
 - name: get the dashboard token
-  shell: echo "$(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')"
+  shell: echo "$(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')" > /etc/k8s_dashboard_token
   register: token
   when: ( mode == "server" )
 
-- name: dump token on k3s master node
-  copy:
-    content: "{{ token.stdout_lines }}"
-    dest: /etc/k8s_dashboard_token
+- name: print token
+  debug:
+    var: token.stdout_lines
   when: ( mode == "server" )
+
+- name: read token on k3s master node
+  shell: cat  /etc/k8s_dashboard_token
+  register: token
+  delegate_to: {{ master_ip }}
+  when: ( mode == "node" )
 
 - name: wait 2 min for flannel to start
   wait_for:
@@ -73,12 +78,6 @@
   when: ( mode == "node" )
 
 - name: Install k3s node
-  shell: INSTALL_K3S_EXEC="--node-label {{ node_label }}" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
-  #shell: INSTALL_K3S_EXEC="--docker" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
-  #--node-label {{ node_label }}
+  shell: INSTALL_K3S_EXEC="--node-label {{ node_label }}" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN="{{ token.stdout }}" sh /tmp/k3s.sh 
   when: ( mode == "node" )
 
-- name: print token
-  debug:
-    var: token.stdout_lines
-  when: ( mode == "server" )
