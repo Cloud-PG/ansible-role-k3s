@@ -10,10 +10,6 @@
   command: sh /tmp/k3s.sh --no-deploy traefik
   when: ( mode == "server" )
 
-- name: Copy node token into nfs folder
-  command: cp /var/lib/rancher/k3s/server/node-token /root/node-token
-  when: ( mode == "server" )
-
 - name: Link kubectl to /usr/bin/kubectl
   file:
     src: /usr/local/bin/kubectl
@@ -56,7 +52,7 @@
   when: ( mode == "server" )
 
 - name: get the dashboard token
-  shell: echo "$(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')" > /etc/k8s_dashboard_token
+  shell: echo "$(kubectl describe secret -n kubernetes-dashboard kubernetes-dashboard-secret | grep "token:" | awk '{print $2}')"
   register: token
   when: ( mode == "server" )
 
@@ -65,9 +61,15 @@
     var: token.stdout_lines
   when: ( mode == "server" )
 
-- name: read token on k3s master node
-  shell: cat  /etc/k8s_dashboard_token
-  register: token
+- name: dump node token on k3s master node
+  copy:
+    content: "{{ token.stdout }}"
+    dest: /etc/k8s_dashboard_token
+  when: ( mode == "server" )
+
+- name: dump node token on k3s master node
+  shell: cat  /var/lib/rancher/k3s/server/node-token
+  register: node_token
   delegate_to: {{ master_ip }}
   when: ( mode == "node" )
 
@@ -78,6 +80,8 @@
   when: ( mode == "node" )
 
 - name: Install k3s node
-  shell: INSTALL_K3S_EXEC="--node-label {{ node_label }}" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN="{{ token.stdout }}" sh /tmp/k3s.sh 
+  shell: INSTALL_K3S_EXEC="--node-label {{ node_label }}" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN="{{ node_token.stdout }}" sh /tmp/k3s.sh 
+  #shell: INSTALL_K3S_EXEC="--docker" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
+  #--node-label {{ node_label }}
   when: ( mode == "node" )
 
