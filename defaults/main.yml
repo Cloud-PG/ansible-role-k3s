@@ -3,4 +3,5 @@
 
 dashboardNodePort: 30443
 helm_version: v2
+k3s_version: v1.17.0+k3s.1
 node_label: unlabelled=true
