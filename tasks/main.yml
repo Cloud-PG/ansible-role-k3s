@@ -7,7 +7,9 @@
     dest: /tmp/k3s.sh
 
 - name: Install k3s server
-  command: INSTALL_K3S_VERSION={{ k3s_version }} sh /tmp/k3s.sh --no-deploy traefik
+  command: sh /tmp/k3s.sh --no-deploy traefik
+  environment: 
+    INSTALL_K3S_VERSION: {{ k3s_version }}
   when: ( mode == "server" )
 
 - name: Link kubectl to /usr/bin/kubectl
@@ -80,7 +82,11 @@
   when: ( mode == "node" )
 
 - name: Install k3s node
-  shell: INSTALL_K3S_EXEC="--node-label {{ node_label }}" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN="{{ node_token.stdout }}" sh /tmp/k3s.sh 
+  command: sh /tmp/k3s.sh 
+  environment:
+    INSTALL_K3S_EXEC: "--node-label {{ node_label }}"
+    K3S_URL: https://{{ master_ip }}:6443
+    K3S_TOKEN: "{{ node_token.stdout }}"
   #shell: INSTALL_K3S_EXEC="--docker" K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN=`cat  /mnt/nfs/node-token` sh /tmp/k3s.sh 
   #--node-label {{ node_label }}
   when: ( mode == "node" )
