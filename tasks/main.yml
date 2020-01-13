@@ -67,7 +67,7 @@
     dest: /etc/k8s_dashboard_token
   when: ( mode == "server" )
 
-- name: dump node token on k3s master node
+- name: read node token on k3s master node
   shell: cat  /var/lib/rancher/k3s/server/node-token
   register: node_token
   delegate_to: "{{ master_ip }}"
