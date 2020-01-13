@@ -70,7 +70,7 @@
 - name: dump node token on k3s master node
   shell: cat  /var/lib/rancher/k3s/server/node-token
   register: node_token
-  delegate_to: {{ master_ip }}
+  delegate_to: "{{ master_ip }}"
   when: ( mode == "node" )
 
 - name: wait 2 min for flannel to start
