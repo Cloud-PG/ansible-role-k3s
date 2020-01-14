@@ -7,3 +7,8 @@
       mode: server
       node_label: unlabelled=true
       k3s_version: v1.17.0+k3s.1
+    - role: ansible-role-k3s
+      master_ip: localhost
+      mode: node 
+      node_label: unlabelled=true
+      k3s_version: v1.17.0+k3s.1
