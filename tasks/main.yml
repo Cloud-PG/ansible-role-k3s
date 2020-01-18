@@ -19,9 +19,10 @@
     state: link
   when: ( mode == "server" )
 
-- name: set autocompletition for kubectl
-  shell: echo 'source <(kubectl completion bash)' >> ~/.bashrc
-  when: ( mode == "server" )
+# TODO: fix pkg for autocomplete
+#- name: set autocompletition for kubectl
+#  shell: echo 'source <(kubectl completion bash)' >> ~/.bashrc
+#  when: ( mode == "server" )
 
 - name: Install Helm v2
   shell: |
